@@ -1,6 +1,45 @@
-@TexturePipeline.Api_HostAddress = http://localhost:5285
+@baseUrl = http://localhost:8080
+@jobId = replace-with-job-id
 
-GET {{TexturePipeline.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### Liveness
 
-###
+GET {{baseUrl}}/health/live
+
+### Readiness
+
+GET {{baseUrl}}/health/ready
+
+### Create a texture generation job
+
+POST {{baseUrl}}/api/textures/generate
+Content-Type: application/json
+
+{
+  "description": "weathered red brick wall",
+  "resolution": 512,
+  "seed": 12345
+}
+
+### Get job status
+
+GET {{baseUrl}}/api/textures/jobs/{{jobId}}
+
+### Download Albedo
+
+GET {{baseUrl}}/api/textures/jobs/{{jobId}}/image/albedo
+
+### Download Normal map
+
+GET {{baseUrl}}/api/textures/jobs/{{jobId}}/image/normal
+
+### Download Height map
+
+GET {{baseUrl}}/api/textures/jobs/{{jobId}}/image/height
+
+### Download Roughness map
+
+GET {{baseUrl}}/api/textures/jobs/{{jobId}}/image/roughness
+
+### Download Ambient Occlusion
+
+GET {{baseUrl}}/api/textures/jobs/{{jobId}}/image/ao
