@@ -57,8 +57,6 @@ dist/
 # -----------------------------
 # AI models
 # -----------------------------
-models/
-**/models/
 
 *.safetensors
 *.ckpt
