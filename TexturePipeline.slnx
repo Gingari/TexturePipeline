@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/TexturePipeline.Api/">
+    <Project Path="TexturePipeline.Api.Tests/TexturePipeline.Api.Tests.csproj" />
+  </Folder>
+  <Project Path="TexturePipeline.Api/TexturePipeline.Api.csproj" />
+</Solution>

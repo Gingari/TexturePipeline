@@ -1,0 +1,154 @@
+# -----------------------------
+# Environment and secrets
+# -----------------------------
+.env
+.env.*
+!.env.example
+
+*.secret
+*.secrets
+secrets.json
+appsettings.Development.json
+appsettings.Local.json
+
+
+# -----------------------------
+# .NET
+# -----------------------------
+**/bin/
+**/obj/
+**/publish/
+**/TestResults/
+
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+coverage/
+coverage.json
+coverage.xml
+*.coverage
+*.coveragexml
+
+
+# -----------------------------
+# Python
+# -----------------------------
+**/venv/
+**/.venv/
+**/env/
+
+**/__pycache__/
+*.py[cod]
+*.pyo
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+build/
+dist/
+*.egg-info/
+
+
+# -----------------------------
+# AI models
+# -----------------------------
+models/
+**/models/
+
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.onnx
+*.gguf
+*.bin.index.json
+
+
+# -----------------------------
+# Generated texture files
+# -----------------------------
+textures/
+**/textures/
+data/
+output/
+outputs/
+**/output/
+**/outputs/
+
+comfy-output/
+texture-results/
+
+*.part
+
+
+# -----------------------------
+# Logs and temporary files
+# -----------------------------
+logs/
+**/logs/
+
+*.log
+*.tmp
+*.temp
+*.bak
+*.cache
+
+tmp/
+temp/
+
+
+# -----------------------------
+# IDE
+# -----------------------------
+.vs/
+.vscode/
+.idea/
+
+*.code-workspace
+_ReSharper*/
+*.DotSettings.user
+
+
+# -----------------------------
+# Operating system
+# -----------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+$RECYCLE.BIN/
+System Volume Information/
+
+
+# -----------------------------
+# Docker local overrides
+# -----------------------------
+docker-compose.override.yml
+compose.override.yml
+
+
+# -----------------------------
+# Local databases
+# -----------------------------
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+
+# -----------------------------
+# Archives
+# -----------------------------
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+# Local ComfyUI Desktop installation
+/Engine/Comfy Desktop/

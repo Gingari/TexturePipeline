@@ -1,0 +1,121 @@
+services:
+  api:
+    build:
+      context: ./TexturePipeline.Api
+      dockerfile: Dockerfile
+
+    ports:
+      - "127.0.0.1:${API_PORT:-8080}:8080"
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      Services__ComfyUiUrl: http://comfyui:8188
+      Services__PythonBridgeUrl: http://python-engine:5001
+      Ollama__BaseUrl: http://ollama:11434
+      Ollama__TimeoutMinutes: 10
+      Storage__RootPath: /app/textures
+
+    volumes:
+      - "${RESULTS_PATH:-./data/textures}:/app/textures"
+
+    depends_on:
+      comfyui:
+        condition: service_healthy
+      python-engine:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - --fail
+        - --silent
+        - http://localhost:8080/health/ready
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+    restart: unless-stopped
+
+  python-engine:
+    build:
+      context: ./TexturePipeline.ML
+      dockerfile: Dockerfile
+
+    expose:
+      - "5001"
+
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:5001/docs')"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+    restart: unless-stopped
+
+  comfyui:
+    build:
+      context: ./TexturePipeline.Comfy
+      dockerfile: Dockerfile
+
+    ports:
+      - "127.0.0.1:${COMFYUI_PORT:-8188}:8188"
+
+    environment:
+      COMFY_ARGS: "${COMFY_ARGS:-}"
+
+    volumes:
+      - comfy-models:/app/ComfyUI/models
+      - comfy-output:/app/ComfyUI/output
+
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - --fail
+        - --silent
+        - http://localhost:8188/system_stats
+      interval: 15s
+      timeout: 10s
+      retries: 60
+      start_period: 30m
+
+    restart: unless-stopped
+
+  ollama:
+    build:
+      context: ./TexturePipeline.Ollama
+      dockerfile: Dockerfile
+
+    expose:
+      - "11434"
+
+    volumes:
+      - ollama-data:/root/.ollama
+
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - --fail
+        - --silent
+        - http://localhost:11434/api/tags
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 5m
+
+    restart: unless-stopped
+
+volumes:
+  comfy-models:
+  comfy-output:
+  ollama-data:
